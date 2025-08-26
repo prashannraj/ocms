@@ -43,7 +43,7 @@ class AuthenticatedSessionController extends Controller
         }
 
         //Super Admin Bypass OTP
-        if ($user->hasRole('Super Admin')) {
+        if ($user->hasRole('super_admin')) {
             Auth::login($user, $request->boolean('remember'));
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
