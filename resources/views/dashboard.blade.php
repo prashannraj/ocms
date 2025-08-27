@@ -1,96 +1,39 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-6 px-4 sm:px-6 lg:px-8 space-y-6">
+@section('title', 'Dashboard')
 
-        {{-- Stat Cards --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5">
-                <div class="text-gray-600 dark:text-gray-300 text-sm">Total Users</div>
-                <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $totalUsers }}</div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5">
-                <div class="text-gray-600 dark:text-gray-300 text-sm">Total Roles</div>
-                <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $totalRoles }}</div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5">
-                <div class="text-gray-600 dark:text-gray-300 text-sm">Online Users</div>
-                <div class="text-2xl font-bold text-gray-900 dark:text-white">--</div> {{-- Optional --}}
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5">
-                <div class="text-gray-600 dark:text-gray-300 text-sm">New Signups</div>
-                <div class="text-2xl font-bold text-gray-900 dark:text-white">--</div> {{-- Optional --}}
-            </div>
+@section('content')
+<div class="row mt-4">
+  @foreach ([
+    ['title'=>'Sales', 'value'=>'$8,753.00', 'change'=>'18.33%', 'bg'=>'warning'],
+    ['title'=>'Margin', 'value'=>'$5,300.00', 'change'=>'13.21%', 'bg'=>'pink'],
+    ['title'=>'Orders', 'value'=>'$1,753.00', 'change'=>'67.98%', 'bg'=>'primary'],
+    ['title'=>'Affiliate', 'value'=>'2368', 'change'=>'20.32%', 'bg'=>'info'],
+  ] as $card)
+    <div class="col-md-3 mb-4">
+      <div class="card text-white bg-{{ $card['bg'] }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ $card['title'] }}</h5>
+          <h3>{{ $card['value'] }}</h3>
+          <small>{{ $card['change'] }} Since last month</small>
         </div>
-
-        {{-- Recent Users --}}
-        <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Recent Users</h3>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Name</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Email</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Role</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                        @forelse ($latestUsers as $user)
-                            <tr>
-                                <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">{{ $user->name }}</td>
-                                <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">{{ $user->email }}</td>
-                                <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-200">{{ $user->roles->pluck('name')->join(', ') }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">No users found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        {{-- Optional Chart Placeholder --}}
-        <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">User Activity</h3>
-            <div id="chart-container" class="h-64 bg-gray-100 dark:bg-gray-700 rounded"></div>
-        </div>
-
+      </div>
     </div>
-</x-app-layout>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Example Chart.js initialization (replace with actual data and configuration)
-    const ctx = document.getElementById('chart-container').getContext('2d');
-    const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-            datasets: [{
-                label: 'User Signups',
-                data: [10, 20, 15, 30, 25, 40],
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
+  @endforeach
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Business Survey</h5>
+    <div class="row text-center mb-3">
+      <div class="col"><strong>Today Earnings</strong><br>$5,300</div>
+      <div class="col"><strong>Product Sold</strong><br>$9,100</div>
+      <div class="col"><strong>Today Orders</strong><br>$4,354</div>
+    </div>
+    <div style="height: 300px;" class="bg-light d-flex justify-content-center align-items-center">
+      <em>[ Chart.js placeholder ]</em>
+    </div>
+    <p class="mt-3">Sales Revenue: <strong>$2,45,500</strong> <span class="text-muted">last 8 months</span></p>
+  </div>
+</div>
+@endsection

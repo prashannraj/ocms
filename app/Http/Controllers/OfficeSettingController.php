@@ -19,6 +19,13 @@ class OfficeSettingController extends Controller
         //
     }
 
+    public function index()
+    {
+        // यहाँ मुख्य Office Setting पेज देखाउने कोड हुन्छ
+        $settings = OfficeSetting::first();
+        return view('office_setting.index', compact('settings'));
+    }
+
     public function edit()
     {
         $this->authorize('manage', OfficeSetting::class);

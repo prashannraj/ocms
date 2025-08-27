@@ -27,7 +27,9 @@ Route::post('/otp', [OtpController::class, 'verify'])->name('otp.verify');
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::get('/office-settings', [OfficeSettingController::class, 'edit'])->name('office_settings.edit');
     Route::post('/office-settings', [OfficeSettingController::class, 'update'])->name('office_settings.update');
+    Route::get('/office-setting', [OfficeSettingController::class, 'index'])->name('office.setting');
 });
+
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::resource('users', UserController::class)->except(['show']);
 });

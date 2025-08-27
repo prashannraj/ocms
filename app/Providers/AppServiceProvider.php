@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\OfficeSetting;
 use Illuminate\Support\Facades\View;
+use Spatie\Permission\Middlewares\RoleMiddleware;
 
 class AppServiceProvider extends ServiceProvider
 {
