@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm rounded">
     <div class="container-fluid">
         <span class="navbar-brand">Hi, {{ Auth::user()->name }}</span>
