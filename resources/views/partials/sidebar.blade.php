@@ -47,5 +47,13 @@
         <i class="bi bi-gear me-2"></i><span class="sidebar-text">Office Setting</span>
       </a>
     </li>
+
+    <li>
+      <a href="{{ route('users.index') }}" class="nav-link text-dark">
+        <i class="bi bi-people me-2"></i>
+        <span class="sidebar-text">Users</span>
+      </a>
+    </li>
+
   </ul>
 </div>
