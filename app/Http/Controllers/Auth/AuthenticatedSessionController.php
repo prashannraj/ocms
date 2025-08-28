@@ -31,6 +31,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -47,9 +48,9 @@ class AuthenticatedSessionController extends Controller
             Auth::login($user, $request->boolean('remember'));
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
-    }
+            }
 
-    //Others -Generate OTP and Send Mail and Redirect to OTP Verification Page
+        //Others -Generate OTP and Send Mail and Redirect to OTP Verification Page
         $otp = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         //Save OTP to database
         UserOtp::where('user_id', $user->id)->delete(); // Delete any existing OTPs for the user
@@ -58,15 +59,15 @@ class AuthenticatedSessionController extends Controller
             ['otp' => Hash::make($otp),
             'expires_at' => Carbon::now()->addMinutes(5)]
         );
-
         //Send OTP Mail
         Mail::to($user->email)->send(new OtpMail($otp));
 
         //Store user id in session for later verification
-        $request->session()->put('user_id', $user->id);
+        $request->session()->put('otp_user_id', $user->id);
         $request->session()->put('remember', $request->boolean('remember'));
 
-        return redirect()->route('otp.verify')->with('status', 'OTP has been sent to your email address. It is valid for 5 minutes.');
+        return redirect()->route('otp.show')->with('status', 'OTP has been sent to your email address. It is valid for 5 minutes.');
+
     }
 
     /**

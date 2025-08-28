@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -13,56 +12,41 @@ class OtpMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * The OTP value.
-     *
-     * @var string
-     */
-    public $otp;
+    public string $otp;
 
     /**
      * Create a new message instance.
      */
     public function __construct(string $otp)
     {
-        //
         $this->otp = $otp;
-
-    }
-
-    public function build()
-    {
-        return $this->subject('Your One-Time Password (OTP)')
-                    ->view('emails.otp')
-                    ->with([
-                        'otp' => $this->otp,
-                    ]);
     }
 
     /**
-     * Get the message envelope.
+     * Define the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Otp Mail',
+            subject: 'Your One-Time Password (OTP)',
         );
     }
 
     /**
-     * Get the message content definition.
+     * Define the content of the message.
      */
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.otp', // ✅ यो view path मा हुनु पर्छ: resources/views/emails/otp.blade.php
+            with: [
+                'otp' => $this->otp,
+            ],
         );
     }
 
     /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * Define any attachments if needed (empty in this case).
      */
     public function attachments(): array
     {

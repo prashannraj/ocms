@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/otp', [OtpController::class, 'show'])->name('otp.show');
 Route::post('/otp', [OtpController::class, 'verify'])->name('otp.verify');
+Route::get('/otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
+
 
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::get('/office-settings', [OfficeSettingController::class, 'edit'])->name('office_settings.edit');

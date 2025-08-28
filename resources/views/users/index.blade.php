@@ -11,7 +11,7 @@
     <table class="table table-bordered">
         <thead class="table-light">
             <tr>
-                <th>#</th>
+                <th>SN</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Role</th>
