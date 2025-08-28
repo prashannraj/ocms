@@ -5,23 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\OfficeSetting;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class OfficeSettingController extends Controller
 {
     use AuthorizesRequests;
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
-    {
-        //
-    }
 
     public function index()
     {
-        // यहाँ मुख्य Office Setting पेज देखाउने कोड हुन्छ
         $settings = OfficeSetting::first();
         return view('office_setting.index', compact('settings'));
     }
@@ -32,10 +23,10 @@ class OfficeSettingController extends Controller
         $officeSetting = OfficeSetting::first();
         return view('office_settings.edit', compact('officeSetting'));
     }
+
     public function update(Request $request)
     {
         $this->authorize('manage', OfficeSetting::class);
-        $officeSetting = OfficeSetting::first();
 
         $data = $request->validate([
             'app_name' => 'required|string|max:255',
@@ -51,12 +42,24 @@ class OfficeSettingController extends Controller
 
         $officeSetting = OfficeSetting::first();
 
+        // ✅ Handle app_logo upload using 'public' disk
         if ($request->hasFile('app_logo')) {
-            // Delete old app_logo if exists
             if ($officeSetting && $officeSetting->app_logo) {
-                Storage::delete($officeSetting->app_logo);
-                $data['app_logo'] = $request->file('app_logo')->store('public/settings');
+                Storage::disk('public')->delete($officeSetting->app_logo);
             }
+
+            $logoPath = $request->file('app_logo')->store('office_setting', 'public');
+            $data['app_logo'] = $logoPath;
+        }
+
+        // ✅ Handle app_favicon upload using 'public' disk
+        if ($request->hasFile('app_favicon')) {
+            if ($officeSetting && $officeSetting->app_favicon) {
+                Storage::disk('public')->delete($officeSetting->app_favicon);
+            }
+
+            $faviconPath = $request->file('app_favicon')->store('office_setting', 'public');
+            $data['app_favicon'] = $faviconPath;
         }
 
         if ($officeSetting) {

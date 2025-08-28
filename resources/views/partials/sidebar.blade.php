@@ -1,7 +1,7 @@
 <div class="sidebar d-flex flex-column p-3 text-dark">
   <div class="logo-toggle-wrapper mb-4 px-2">
     <a href="{{ route('dashboard') }}">
-      <img src="{{ asset($officeSettings->app_logo) }}" alt="Logo" width="40" height="40" class="me-2">
+      <img src="{{ asset('storage/' . $officeSettings->app_logo) }}" alt="Logo" width="40" height="40" class="me-2">
     </a>
 
     <!-- Toggle Button (3-line hamburger) -->
