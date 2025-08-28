@@ -6,6 +6,7 @@ use App\Http\Controllers\OtpController;
 use App\Http\Controllers\OfficeSettingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\EnquiryFormController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,6 +35,16 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
 
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::resource('users', UserController::class)->except(['show']);
+});
+
+Route::prefix('admin/enquiryform')->name('enquiryform.')->group(function () {
+    Route::get('/', [EnquiryFormController::class, 'index'])->name('index');
+    Route::get('/create', [EnquiryFormController::class, 'create'])->name('create');
+    Route::post('/store', [EnquiryFormController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [EnquiryFormController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [EnquiryFormController::class, 'update'])->name('update');
+    Route::get('/display/{uuid}', [EnquiryFormController::class, 'display'])->name('display');
+    Route::post('/fillup/{uuid}', [EnquiryFormController::class, 'fillup'])->name('fillup');
 });
 
 
