@@ -4,36 +4,72 @@
 
 @section('content')
 <div class="row mt-4">
-  @foreach ([
-    ['title'=>'Sales', 'value'=>'$8,753.00', 'change'=>'18.33%', 'bg'=>'warning'],
-    ['title'=>'Margin', 'value'=>'$5,300.00', 'change'=>'13.21%', 'bg'=>'pink'],
-    ['title'=>'Orders', 'value'=>'$1,753.00', 'change'=>'67.98%', 'bg'=>'primary'],
-    ['title'=>'Affiliate', 'value'=>'2368', 'change'=>'20.32%', 'bg'=>'info'],
-  ] as $card)
+  {{-- Example cards: Total Users, Total Roles, Users Today, Latest Users Count --}}
+  @php
+    $cards = [
+      ['title' => 'Total Users', 'value' => $data['totalUsers'], 'change' => 'N/A', 'bg' => 'primary'],
+      ['title' => 'Total Roles', 'value' => $data['totalRoles'], 'change' => 'N/A', 'bg' => 'info'],
+      ['title' => 'Total Enquiry Forms', 'value' => $data['totalEnquiryForms'], 'change' => 'N/A', 'bg' => 'success'],
+      ['title' => 'Latest 5 Users', 'value' => count($data['latestUsers']), 'change' => 'N/A', 'bg' => 'warning'],
+    ];
+  @endphp
+
+  @foreach ($cards as $card)
     <div class="col-md-3 mb-4">
       <div class="card text-white bg-{{ $card['bg'] }}">
         <div class="card-body">
           <h5 class="card-title">{{ $card['title'] }}</h5>
           <h3>{{ $card['value'] }}</h3>
-          <small>{{ $card['change'] }} Since last month</small>
+          <small>{{ $card['change'] !== 'N/A' ? $card['change'].' Since last month' : '' }}</small>
         </div>
       </div>
     </div>
   @endforeach
 </div>
 
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">User Registrations Over Time</h5>
+    <ul>
+      <li>Last 30 days: {{ $data['userRegistrations'][0] }}</li>
+      <li>Last 3 months: {{ $data['userRegistrations'][1] }}</li>
+      <li>Last 6 months: {{ $data['userRegistrations'][2] }}</li>
+      <li>Last 1 year: {{ $data['userRegistrations'][3] }}</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Enquiry Form Registrations Over Time</h5>
+    <ul>
+      <li>Last 30 days: {{ $data['enquiryRegistrations'][0] }}</li>
+      <li>Last 3 months: {{ $data['enquiryRegistrations'][1] }}</li>
+      <li>Last 6 months: {{ $data['enquiryRegistrations'][2] }}</li>
+      <li>Last 1 year: {{ $data['enquiryRegistrations'][3] }}</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Users by Role</h5>
+    <ul>
+      @foreach ($data['rolesWithUserCount'] as $role)
+        <li>{{ $role->name }}: {{ $role->users_count }} users</li>
+      @endforeach
+    </ul>
+  </div>
+</div>
+
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Business Survey</h5>
-    <div class="row text-center mb-3">
-      <div class="col"><strong>Today Earnings</strong><br>$5,300</div>
-      <div class="col"><strong>Product Sold</strong><br>$9,100</div>
-      <div class="col"><strong>Today Orders</strong><br>$4,354</div>
-    </div>
-    <div style="height: 300px;" class="bg-light d-flex justify-content-center align-items-center">
-      <em>[ Chart.js placeholder ]</em>
-    </div>
-    <p class="mt-3">Sales Revenue: <strong>$2,45,500</strong> <span class="text-muted">last 8 months</span></p>
+    <h5 class="card-title">Latest 5 Users</h5>
+    <ul>
+      @foreach ($data['latestUsers'] as $user)
+        <li>{{ $user->name }} ({{ $user->email }})</li>
+      @endforeach
+    </ul>
   </div>
 </div>
 @endsection

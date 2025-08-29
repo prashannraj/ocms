@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('contact_phone')->nullable();
             $table->string('address')->nullable();
             $table->string('footer_text')->nullable();
+            $table->string('website')->nullable();
             $table->string('timezone')->default('UTC');
             $table->text('details')->nullable();
             $table->timestamps();

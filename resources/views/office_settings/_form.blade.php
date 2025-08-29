@@ -101,6 +101,15 @@
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
+        <!-- Website -->
+        <div class="mb-3">  
+            <label for="website" class="form-label">Website</label>
+            <input type="text" name="website" id="website" class="form-control"
+                   value="{{ old('website', $officeSetting->website ?? '') }}">
+            @error('website')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
 
         <!-- Timezone -->
         <div class="mb-3">
