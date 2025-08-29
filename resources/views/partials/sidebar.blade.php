@@ -22,6 +22,27 @@
         <i class="bi bi-house-door me-2"></i><span class="sidebar-text">Dashboard</span>
       </a>
     </li>
+
+    <!-- Enquiry Form Main Menu -->
+    <li>
+      <a href="#enquirySubmenu" data-bs-toggle="collapse" class="nav-link text-dark d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-file-earmark-text me-2"></i>Enquiry Forms</span>
+        <i class="bi bi-chevron-down"></i>
+      </a>
+      <ul class="collapse list-unstyled ps-3" id="enquirySubmenu">
+        <li>
+          <a href="{{ route('enquiryform.index') }}" class="nav-link text-dark">
+            <i class="bi bi-list-ul me-2"></i>All Enquiry Forms
+          </a>
+        </li>
+        <li>
+          <a href="{{ route('enquiryform.create') }}" class="nav-link text-dark">
+            <i class="bi bi-plus-square me-2"></i>Create New Form
+          </a>
+        </li>
+      </ul>
+    </li>
+
     <li>
       <a href="#" class="nav-link text-dark">
         <i class="bi bi-box me-2"></i><span class="sidebar-text">Basic UI</span>

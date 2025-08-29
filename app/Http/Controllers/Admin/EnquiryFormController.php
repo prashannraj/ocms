@@ -29,6 +29,7 @@ class EnquiryFormController extends Controller
 
     public function create()
     {
+        $countries = IsoCountry::all();
         return view('enquiryform.create');
     }
 
@@ -120,36 +121,62 @@ class EnquiryFormController extends Controller
         $data['unique_code'] = Str::random(8);
         $inq = RawInquiry::create($data);
         $inq->update(['extra_details' => json_encode(['ip' => $request->ip()])]);
+        $countries = IsoCountry::orderBy('order', 'desc')->get();
 
-        Mail::send(new EnquiryVerifyMail(['row' => $inq, 'officeSettings' => OfficeSetting::first()]));
+       // ✅ Send verification mail
+        Mail::to($request->email)->queue(new EnquiryVerifyMail(['row' => $inq, 'officeSettings' => OfficeSetting::first()]));
+        
 
         $users = EmailSender::whereIn('id', [4, 5])->get();
         Notification::send($users, new NewEnquiryAlert($inq));
 
-        return view('enquiryform.success', compact('inq'));
+        return view('enquiryform.success', compact('countries','inq'));
     }
 
     public function immigration(Request $request, EnquiryForm $form)
     {
-        $data = $request->all();
+        // Validate file uploads before processing
+        $request->validate([
+            'refusal_document' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
+            'appellant_passport' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
+            'proff_address' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
+
+        // Prepare data from request except files
+        $data = $request->except(['refusal_document', 'appellant_passport', 'proff_address']);
         $data['form_id'] = $form->id;
         $data['unique_code'] = Str::random(8);
 
+        // Handle file uploads
         foreach (['refusal_document', 'appellant_passport', 'proff_address'] as $field) {
             if ($request->hasFile($field)) {
-                $filename = time() . '-' . $request->$field->getClientOriginalName();
-                $data[$field] = Storage::disk('uploads')->putFileAs($field, $request->$field, $filename);
+                $filename = time() . '-' . $request->file($field)->getClientOriginalName();
+                $path = $request->file($field)->storeAs($field, $filename, 'uploads');
+                $data[$field] = $path;
             }
         }
 
         $inq = RawInquiry::create($data);
         $inq->update(['extra_details' => json_encode(['ip' => $request->ip()])]);
 
-        Mail::send(new EnquiryVerifyMail(['row' => $inq, 'officeSettings' => OfficeSetting::first()]));
+        // Send verification mail
+        Mail::to($request->email)->queue(new EnquiryVerifyMail([
+            'row' => $inq,
+            'officeSettings' => OfficeSetting::first()
+        ]));
 
         $users = EmailSender::whereIn('id', [4, 5])->get();
         Notification::send($users, new NewEnquiryAlert($inq));
 
         return view('enquiryform.success', compact('inq'));
     }
+
+
+        public function showImmigrationForm()
+        {
+            $countries = IsoCountry::orderBy('order', 'desc')->get();
+            return view('immigration', compact('countries'));
+        }
+
+
 }

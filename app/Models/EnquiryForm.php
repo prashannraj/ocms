@@ -9,7 +9,7 @@ class EnquiryForm extends Model
     //
     protected $fillable = [ 'title',
     'name',
-    'description','uuid','status','type'];
+    'description','uuid','status','type', 'hits'];
 
     public function getFormUrlAttribute(){
         return route('enquiryform.display',$this->uuid);

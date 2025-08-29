@@ -19,6 +19,7 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->string('status')->default('pending'); // तपाईंको आवश्यकता अनुसार default राखिएको
             $table->string('type')->nullable(); // प्रकार optional छ भने nullable
+            $table->unsignedInteger('hits')->default(0);
             $table->timestamps(); // created_at र updated_at
         });
     }

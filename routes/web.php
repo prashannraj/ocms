@@ -37,15 +37,18 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::resource('users', UserController::class)->except(['show']);
 });
 
-Route::prefix('admin/enquiryform')->name('enquiryform.')->group(function () {
-    Route::get('/', [EnquiryFormController::class, 'index'])->name('index');
-    Route::get('/create', [EnquiryFormController::class, 'create'])->name('create');
-    Route::post('/store', [EnquiryFormController::class, 'store'])->name('store');
-    Route::get('/{id}/edit', [EnquiryFormController::class, 'edit'])->name('edit');
-    Route::put('/{id}', [EnquiryFormController::class, 'update'])->name('update');
-    Route::get('/display/{uuid}', [EnquiryFormController::class, 'display'])->name('display');
-    Route::post('/fillup/{uuid}', [EnquiryFormController::class, 'fillup'])->name('fillup');
+Route::prefix('admin')->group(function () {
+    Route::resource('enquiryform', EnquiryFormController::class);
+
+    // Custom admin routes (if these are admin only)
+    Route::post('/enquiry/fillup/{uuid}', [EnquiryFormController::class, 'fillup'])->name('enquiry.fillup');
+    Route::get('/enquiryform/display/{uuid}', [EnquiryFormController::class, 'display'])->name('enquiryform.display');
+        // यदि fillup र display सार्वजनिक हुनु पर्छ भने, admin prefix बाट बाहिर राख्नुहोस्:
+    Route::post('/enquiry/fillup/{uuid}', [EnquiryFormController::class, 'fillup'])->name('enquiry.fillup');
+    Route::get('/enquiryform/display/{uuid}', [EnquiryFormController::class, 'display'])->name('enquiryform.display');
 });
+
+
 
 
 require __DIR__.'/auth.php';

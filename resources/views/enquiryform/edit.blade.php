@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 
 
@@ -20,7 +20,7 @@
     </div>
 </div>
 @endsection
-@section('main-content')
+@section('content')
 <div class="row">
     <div class="col">
         <div class="card">

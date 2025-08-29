@@ -57,12 +57,15 @@
 
     <div class="form-group col-md-4">
         <label for="">National of</label>
-        <select name='appellant_nation' required class="form-control">
+        <select name='iso_country_id' required class="form-control">
             <option value="">Select an option</option>
-            @foreach($data['countries'] as $country)
-            <option value="{{$country->id}}" {{old('appellant_nation',optional($row)->appellant_nation) == $country->id?"selected":""}}>{{ucfirst($country->title)}}</option>
+            @foreach($countries as $country)
+                <option value="{{ $country->id }}" {{ old('iso_country_id', optional($row)->iso_country_id) == $country->id ? 'selected' : '' }}>
+                    {{ ucfirst($country->title) }}
+                </option>
             @endforeach
         </select>
+
 
         {!! isError($errors, 'appellant_nation') !!}
 
@@ -74,8 +77,10 @@
         <label for="">Mobile country code</label>
         <select name='country_code' required class="form-control">
             <option value="">Select an option</option>
-            @foreach($data['countries'] as $country)
-            <option value="{{$country->id}}" {{old('country_code',optional($row)->country_iso_mobile) == $country->id?"selected":""}}>{{$country->title}} ({{$country->calling_code}})</option>
+            @foreach($countries as $country)
+                <option value="{{ $country->phonecode }}" {{ old('country_code', optional($row)->country_code) == $country->phonecode ? 'selected' : '' }}>
+                    {{ $country->title }} ( +{{ $country->phonecode }} )
+                </option>
             @endforeach
         </select>
 
@@ -97,12 +102,15 @@
 <div class="form-row">
     <div class="form-group col-md-4">
         <label for="">Country</label>
-        <select name='iso_country_id' required class="form-control">
-            <option value="">Select an option</option>
-            @foreach($data['countries'] as $country)
-            <option value="{{$country->id}}" {{old('iso_country_id',optional($row)->iso_country_id) == $country->id?"selected":""}}>{{ucfirst($country->title)}}</option>
-            @endforeach
-        </select>
+       <select name='iso_country_id' required class="form-control">
+        <option value="">Select an option</option>
+        @foreach($countries as $country)
+            <option value="{{ $country->id }}" {{ old('iso_country_id', optional($row)->iso_country_id) == $country->id ? 'selected' : '' }}>
+                {{ ucfirst($country->title) }}
+            </option>
+        @endforeach
+    </select>
+
 
         {!! isError($errors, 'iso_country_id') !!}
 

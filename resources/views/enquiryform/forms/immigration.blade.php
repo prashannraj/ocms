@@ -98,8 +98,10 @@
         <label for="">National of</label>
         <select name='iso_country_id' required class="form-control">
             <option value="">Select an option</option>
-            @foreach($data['countries'] as $country)
-            <option value="{{$country->id}}" {{old('iso_country_id',optional($row)->iso_country_id) == $country->id?"selected":""}}>{{ucfirst($country->title)}}</option>
+            @foreach($countries as $country)
+                <option value="{{ $country->id }}" {{ old('iso_country_id', optional($row)->iso_country_id) == $country->id ? 'selected' : '' }}>
+                    {{ $country->title }}
+                </option>
             @endforeach
         </select>
 
@@ -113,8 +115,10 @@
        <label for="">Mobile country code</label>
         <select name='country_code' required class="form-control">
             <option value="">Select an option</option>
-            @foreach($data['countries'] as $country)
-            <option value="{{$country->id}}" {{old('country_code',optional($row)->country_iso_mobile) == $country->id?"selected":""}}>{{$country->title}} ({{$country->calling_code}})</option>
+            @foreach($countries as $country)
+                <option value="{{ $country->phonecode }}" {{ old('country_code', optional($row)->country_code) == $country->phonecode ? 'selected' : '' }}>
+                    {{ $country->title }} ( +{{ $country->phonecode }} )
+                </option>
             @endforeach
         </select>
 
@@ -139,15 +143,10 @@
         <label for="">Appellants Country:</label>
         <select name='appellant_nation'  class="form-control">
             <option value="">Please select</option>
-            @foreach($data['countries'] as $country)
-                @if($country->id == '154' || $country->id == '826') // Nepal (154) and United Kingdom (826)
-                    <option value="{{$country->id}}" {{old('appellant_nation',optional($row)->appellant_nation) == $country->id?"selected":""}}>{{ucfirst($country->title)}}</option>
-                @endif
-            @endforeach
-            @foreach($data['countries'] as $country)
-                @if($country->id != '154' && $country->id != '826') // exclude Nepal and United Kingdom
-                    <option value="{{$country->id}}" {{old('appellant_nation',optional($row)->appellant_nation) == $country->id?"selected":""}}>{{ucfirst($country->title)}}</option>
-                @endif
+            @foreach($countries as $country)
+                <option value="{{ $country->id }}" {{ old('appellant_nation', optional($row)->appellant_nation) == $country->id ? 'selected' : '' }}>
+                    {{ $country->title }}
+                </option>
             @endforeach
         </select>
 

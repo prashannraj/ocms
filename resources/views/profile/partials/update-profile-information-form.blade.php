@@ -65,6 +65,25 @@
             </div>
         @endif
     </div>
+    <!-- ✅ Signature Upload -->
+    <div class="mb-3">
+        <label for="signature" class="form-label">Signature</label>
+        <input type="file"
+               class="form-control"
+               id="signature"
+               name="signature"
+               accept="image/*">
+        @error('signature')
+            <div class="text-danger mt-1">{{ $message }}</div>
+        @enderror    
+
+        {{-- पुरानो हस्ताक्षर देखाउने (यदि छ भने) --}}
+        @if ($user->signature)
+            <div class="mt-2">
+                <img src="{{ asset('storage/' . $user->signature) }}" alt="Current Signature" width="80" class="rounded">
+            </div>
+        @endif
+    </div>  
 
     <!-- Save Button -->
     <div class="d-flex align-items-center gap-3">

@@ -1,72 +1,45 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
+@section('title', 'Create Enquiry Form')
 
-
-@section('header')
-<!-- Header -->
-<div class="header bg-wlis pb-6">
-    <div class="container-fluid">
-        <div class="header-body">
-            <div class="row align-items-center py-4">
-                <div class="col-lg-6 col-7">
-                    <h6 class="h2 text-white d-inline-block mb-0">Enquiry Form</h6>
-                </div>
-                <div class="col-lg-6 col-5 text-right">
-                    <a href="/" class="btn btn-sm btn-neutral">
-                        <i class="fas fa-chevron-left"></i> Back to dashboard</a>
-                </div>
-            </div>
-        </div>
+@section('content')
+<div class="container py-4">
+    <!-- Header -->
+    <div class="mb-4">
+        <h2>Enquiry Form</h2>
+        <a href="/" class="btn btn-secondary btn-sm">
+            <i class="fas fa-chevron-left"></i> Back to dashboard
+        </a>
     </div>
-</div>
-@endsection
-@section('main-content')
-<div class="row">
-    <div class="col">
-        <div class="card">
-            <!-- Card header -->
 
-            <div class="card-body">
+    <!-- Success Message -->
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
+    <div class="card shadow-sm">
+        <div class="card-body">
 
-                <form class="" action="{{ route('enquiryform.store')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
+            <form action="{{ route('enquiryform.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
-                    <div class="">
-                        <div class="">
-                            <div class="px-2 py-3 my-3">
-                                <div id="spd" class=" mt-2 row">
+                <div class="row">
+                    @include('enquiryform.form') {{-- your form partial --}}
 
-
-                                   @include("enquiryform.form")
-
-
-                                    <div class="col-md-4 d-flex align-items-end">
-                                        <button type="submit" class='btn btn-primary' name='action' value="apd">Submit</button>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary" name="action" value="apd">Submit</button>
                     </div>
+                </div>
+            </form>
 
-
-                </form>
-            </div>
         </div>
     </div>
 </div>
 @endsection
-
 
 @push('scripts')
-
-<script src="{{asset('assets/js/tinymce/tinymce.min.js')}}"></script>
-
-<script>
-    initiateTinymce('textarea.wysiwyg');
-</script>
+    <script src="{{ asset('assets/js/tinymce/tinymce.min.js') }}"></script>
+    <script>
+        initiateTinymce('textarea.wysiwyg');
+    </script>
 @endpush
